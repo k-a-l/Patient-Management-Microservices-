@@ -1,5 +1,6 @@
 package com.kalyan.patientservice.dto;
 
+import com.kalyan.patientservice.dto.validators.CreatePatientValidationGroup;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
@@ -29,7 +30,7 @@ public class PatientRequestDTO {
 
     private String dateOfBirth;
 
-    @NotBlank(message = "Should not be blank")
+    @NotBlank(groups = CreatePatientValidationGroup.class, message = "Should not be blank")
     private String registeredDate;
 
 
