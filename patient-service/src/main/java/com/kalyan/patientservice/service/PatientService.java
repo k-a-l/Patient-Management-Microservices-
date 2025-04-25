@@ -5,6 +5,7 @@ import com.kalyan.patientservice.dto.PatientResponseDTO;
 import com.kalyan.patientservice.exception.EmailAlreadyExistException;
 import com.kalyan.patientservice.exception.PatientNotFoundException;
 import com.kalyan.patientservice.grpc.BillingServiceGrpcClient;
+import com.kalyan.patientservice.kafka.KafkaProducer;
 import com.kalyan.patientservice.mapper.PatientMapper;
 import com.kalyan.patientservice.model.Patient;
 import com.kalyan.patientservice.repository.PatientRepository;
@@ -29,6 +30,9 @@ public class PatientService {
     @Autowired
     private BillingServiceGrpcClient billingServiceGrpcClient;
 
+    @Autowired
+    private KafkaProducer kafkaProducer;
+
     public List<PatientResponseDTO> getPatients() {
         List<Patient> patients = patientRepository.findAll();
         //List<PatientResponseDTO> patientResponseDTOS = patients.stream().map(patient-> PatientMapper.toDTO(patient)).toList();
@@ -43,6 +47,7 @@ public class PatientService {
         Patient newPatient = patientRepository.save(PatientMapper.toEntity(patientRequestDTO));
         billingServiceGrpcClient.createBillingAccount(newPatient.getId().toString(),newPatient.getName(),newPatient.getEmail());
 
+        kafkaProducer.sendEvent(newPatient);
         return PatientMapper.toDTO(newPatient);
 
     }
