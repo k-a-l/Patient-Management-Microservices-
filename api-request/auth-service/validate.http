@@ -1,0 +1,7 @@
+GET http://localhost:4005/validate
+Authorization: Bearer {{token}}
+
+
+{
+  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0dXNlckB0ZXN0LmNvbSIsInJvbGUiOiJBRE1JTiIsImlhdCI6MTc0NTc0ODg0MywiZXhwIjoxNzQ1Nzg0ODQzfQ.1g_oLI0lsrlQWGDjks302qFTv2THrBdnZy5Qe6AQ4m4"
+}
